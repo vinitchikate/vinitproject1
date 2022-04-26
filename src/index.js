@@ -16,7 +16,3 @@ app.use('/', route);
 app.listen(process.env.PORT || 3000, function () {
     console.log('Express app running on port ' + (process.env.PORT || 3000))
 });
-
-
-
-// git clone https://github.com/amitvsk/Uranium-Project-1.git
