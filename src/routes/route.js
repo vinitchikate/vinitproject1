@@ -7,24 +7,18 @@ const blogsController = require("../controllers/blogsController");
 // Author APIs /authors //Vinit
 router.post("/createauthor", authorController.createauthor);
 
-
 // POST /blogs //Kirtan
 router.post("/blogs", blogsController.postBlogs);
-router.delete("/blogs/:blogId", blogsController.deleteBlogs);
-
 
 // GET /blogs //Amit
 router.get("/getBlogs", blogsController.getBlogs);
 
-
 // PUT /blogs/:blogId //Salman
 router.put("/blogs/:blogId", blogsController.updateblogs);
 
-
 // DELETE /blogs/:blogId //Kirtan
-
+router.delete("/blogs/:blogId", blogsController.deleteBlogs);
 
 // DELETE /blogs?queryParams //Salman
-
 
 module.exports = router;

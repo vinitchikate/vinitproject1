@@ -35,7 +35,6 @@ const getBlogs = async function (req, res) {
         let byCategory = req.query.category;
         let tags = req.query.tags;
         let subcategory = req.query.subcategory;
-
         let allblogs = await blogModel.find({ isDeleted: false, isPublished: true, $or: [{ authorId: authorid }, { category: byCategory }, { tags: tags }, { subcategory: subcategory }] });
 
         return res.status(200).send({ status: true, data: allblogs });
@@ -59,7 +58,7 @@ const updateblogs = async function (req, res) {
         if (blog.isDeleted == false) {
             if (blog.isPublished == true) {
                 let updatedate = await blogModel.findOneAndUpdate({ _id: blogId }, { new: true }, { $set: { publishedAt: dt } })
-                  return res.status(200).send({status:true,data:updatedate})
+                return res.status(200).send({ status: true, data: updatedate })
             }
             let updateblogs = await blogModel.findOneAndUpdate({ _id: blogId }, { ...data }, { new: true })
             return res.status(200).send({ status: true, data: updateblogs })
@@ -70,5 +69,32 @@ module.exports.updateblogs = updateblogs
 
 
 const deleteBlogs = async function (req, res) {
+    try {
+        
+        let blogId = req.params.blogId;
+        // Check if the blogId exists
+        if (!blogId) {
+            return res.status(400).send({ msg: "Enter Blog-Id In Your Params" });
+        }
+
+        let cid = await blogModel.findById(blogId);
+        let checkid = cid.isDeleted;
+        if (cid) {
+            if (checkid == false) {
+                // mark it deleted
+                let update = await blogModel.findOneAndUpdate({ _id: blogId }, { isDeleted: true });
+                // return an HTTP status 200 without any response body.
+                return res.status(200).send();
+            }
+            else {
+                // If the blog document doesn't exist then return an HTTP status of 404
+                return res.status(400).send({ status: false, msg: "Blog Is Deleted" });
+            }
+        } else {
+            return res.status(404).send({ msg: "Plz Enter Valid Blog-Id" });
+        }
+    } catch (err) {
+        res.status(500).send("Something went wrong");
+    }
 }
 module.exports.deleteBlogs = deleteBlogs;
