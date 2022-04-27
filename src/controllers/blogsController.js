@@ -1,5 +1,6 @@
-const authorModel = require('../models/authorModel')
-const blogModel = require('../models/blogModel')
+const authorModel = require('../models/authorModel');
+const blogModel = require('../models/blogModel');
+const moment = require("moment");
 
 
 
@@ -48,12 +49,26 @@ module.exports.getBlogs = getBlogs
 
 // ****************UPDATE BLOGS API********************//
 const updateblogs = async function (req, res) {
-}
+    let data = req.body
+    let blogId = req.params.blogId;
+    let blog = await blogModel.findById(blogId);
+    let dt = moment().format('MMMM Do YYYY, h:mm:ss a');
+
+
+    if (blog) {
+        if (blog.isDeleted == false) {
+            if (blog.isPublished == true) {
+                let updatedate = await blogModel.findOneAndUpdate({ _id: blogId }, { new: true }, { $set: { publishedAt: dt } })
+                  return res.status(200).send({status:true,data:updatedate})
+            }
+            let updateblogs = await blogModel.findOneAndUpdate({ _id: blogId }, { ...data }, { new: true })
+            return res.status(200).send({ status: true, data: updateblogs })
+        }
+    }
+};
 module.exports.updateblogs = updateblogs
 
-// let blogs = await blogModel.findOne({author:authorid, category:byCategory})
-//         if(!blogs){
-//             return res.status(404).send("data not found")
-//         }
-//             let blogs1 = await blogModel.find({tags:tags})
-//             let blog2 = await blogModel.find({subcategory:subcategory})
+
+const deleteBlogs = async function (req, res) {
+}
+module.exports.deleteBlogs = deleteBlogs;

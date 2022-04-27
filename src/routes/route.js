@@ -10,6 +10,7 @@ router.post("/createauthor", authorController.createauthor);
 
 // POST /blogs //Kirtan
 router.post("/blogs", blogsController.postBlogs);
+router.delete("/blogs/:blogId", blogsController.deleteBlogs);
 
 
 // GET /blogs //Amit

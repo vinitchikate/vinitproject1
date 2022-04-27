@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const moment = require("moment");
 
 const blogsSchema = new mongoose.Schema(
     {
@@ -31,8 +32,8 @@ const blogsSchema = new mongoose.Schema(
             default: false
         },
         publishedAt: {
-            type: Date,
-            dafault: null
+            type: String,
+            default: moment().format('MMMM Do YYYY, h:mm:ss a')
         },
         isPublished: {
             type: Boolean,
