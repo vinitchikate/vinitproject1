@@ -3,7 +3,7 @@ const blogModel = require('../models/blogModel');
 const moment = require("moment");
 
 
-
+// Kirtan Gajjar
 const postBlogs = async function (req, res) {
     try {
         // Get authorId in request body only.
@@ -28,7 +28,7 @@ const postBlogs = async function (req, res) {
 };
 module.exports.postBlogs = postBlogs;
 
-
+// Amit Vishvakarma
 const getBlogs = async function (req, res) {
     try {
         let authorid = req.query.authorId;
@@ -46,14 +46,12 @@ const getBlogs = async function (req, res) {
 module.exports.getBlogs = getBlogs
 
 
-// ****************UPDATE BLOGS API********************//
+// Salman Sayyed
 const updateblogs = async function (req, res) {
     let data = req.body
     let blogId = req.params.blogId;
     let blog = await blogModel.findById(blogId);
     let dt = moment().format('MMMM Do YYYY, h:mm:ss a');
-
-
     if (blog) {
         if (blog.isDeleted == false) {
             if (blog.isPublished == true) {
@@ -67,10 +65,9 @@ const updateblogs = async function (req, res) {
 };
 module.exports.updateblogs = updateblogs
 
-
+// Kirtan Gajjar
 const deleteBlogs = async function (req, res) {
     try {
-        
         let blogId = req.params.blogId;
         // Check if the blogId exists
         if (!blogId) {
@@ -98,3 +95,5 @@ const deleteBlogs = async function (req, res) {
     }
 }
 module.exports.deleteBlogs = deleteBlogs;
+
+// Salman Sayyed
