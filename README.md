@@ -21,7 +21,7 @@ Repository for backend cohort - Uranium
 - Create a author document from request body.
   `Endpoint: BASE_URL/authors`
 
-### POST /blogs   //Kirtan
+### POST /blogs   //Kirtan Gajjar
 - Create a blog document from request body. Get authorId in request body only.
 - Make sure the authorId is a valid authorId by checking the author exist in the authors collection.
 - Return HTTP status 201 on a succesful blog creation. Also return the blog document. The response should be a JSON object like [this](#successful-response-structure) 
@@ -47,7 +47,7 @@ example of a query url: blogs?filtername=filtervalue&f2=fv2
 - Return an HTTP status 200 if updated successfully with a body like [this](#successful-response-structure) 
 - Also make sure in the response you return the updated blog document. 
 
-### DELETE /blogs/:blogId  //Kirtan
+### DELETE /blogs/:blogId  //Kirtan Gajjar
 - Check if the blogId exists( and is not deleted). If it does, mark it deleted and return an HTTP status 200 without any response body.
 - If the blog document doesn't exist then return an HTTP status of 404 with a body like [this](#error-response-structure) 
 
@@ -86,7 +86,6 @@ Refer below sample
 
 ## Response
 
-
 ### Successful Response structure
 ```yaml
 {
@@ -103,10 +102,6 @@ Refer below sample
   msg: ""
 }
 ```
-
-
-
-
 
 ## Collections
 ### Blogs
