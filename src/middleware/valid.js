@@ -3,7 +3,7 @@ const authorModel = require('../models/authorModel');
 // amitvsk //Kirtan-G
 const validateAuthor = async function (req, res, next) {
     try {
-        let data = req.body
+        let data = req.body;
         const { firstname, lastname, title, email, password } = data
 
         if (Object.keys(data).length != 0) {

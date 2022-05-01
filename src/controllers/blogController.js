@@ -126,15 +126,11 @@ const queryDeleted = async function (req, res) {
         let data = req.query;
         let blog = req.params.blogId;
 
-        // checking length of blogid if greather than 24 then send error
-        if (blog.length < 24) {
-            return res.status(400).send('bad request');
-        }
-
         let valid = await blogModel.findOne(data);
         if (!valid) {
             return res.status(404).send({ status: false, msg: "Data doesn't exit!!" })
         }
+        
         if (Object.values(data).length <= 0) {
             return res.status(400).send({ status: false, msg: "Input Missing" });
         }
