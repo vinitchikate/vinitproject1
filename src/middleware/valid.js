@@ -39,6 +39,10 @@ const validateAuthor = async function (req, res, next) {
         if (Object.values(email).length <= 0) {
             return res.status(400).send("The email is required and unique");
         }
+        let author = await authorModel.findOne({email:email})
+        if(author){
+            return res.status(400).send("This email is already exists");
+        }
         if (Object.values(password).length <= 0) {
             return res.status(400).send("The password is required");
         } else {
