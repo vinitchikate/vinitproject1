@@ -1,3 +1,4 @@
+const validateEmail = require('email-validator');
 const authorModel = require('../models/authorModel');
 
 // amitvsk //Kirtan-G
@@ -26,6 +27,8 @@ const validateAuthor = async function (req, res, next) {
         else {
             return res.status(400).send({ msg: "Mandatory field Missing!!" })
         }
+        
+        if(!validateEmail.validate(data.email)) return res.status(400).send({ status: false, msg: "Enter a valid email" })
 
         if (Object.values(firstname).length <= 0) {
             return res.status(400).send("The firstname is required");
