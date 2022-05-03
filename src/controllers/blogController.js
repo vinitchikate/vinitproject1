@@ -143,10 +143,10 @@ const queryDeleted = async function (req, res) {
 
         let deleted = await blogModel.findOneAndUpdate(data, { isDeleted: true }, { new: true });
         if (deleted.isDeleted == true) {
-            let update = await blogModel.findOneAndUpdate({ _id: blog }, { deletedAt: new String(Date()) });
+            let update = await blogModel.findOneAndUpdate(data, { deletedAt: new String(Date()) });
         }
         if (deleted.isDeleted == false) {
-            let update = await blogModel.findOneAndUpdate({ _id: blog }, { deletedAt: null });
+            let update = await blogModel.findOneAndUpdate(data, { deletedAt: null });
         }
         return res.status(200).send({ status: true, data: deleted });
     }
