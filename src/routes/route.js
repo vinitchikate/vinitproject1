@@ -11,7 +11,7 @@ router.delete("/blogs/:blogId", Authentication, Authrization, blogsController.de
 
 // Salman-110
 router.put("/blogs/:blogId", Authrization, blogsController.updateblogs);
-router.delete("/blogsq/:blogId", Authentication, Authrization, blogsController.queryDeleted);
+router.delete("/blogs", Authentication, Authrization, blogsController.queryDeleted);
 
 //amitvsk
 router.get("/blogs", Authentication, blogsController.getBlogs);
