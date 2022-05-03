@@ -1,5 +1,6 @@
-const { default: mongoose } = require('mongoose');
 const blogModel = require('../models/blogModel');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 
 // Kirtan-G
@@ -124,66 +125,30 @@ module.exports.deleteBlogs = deleteBlogs;
 // Salman-110
 const queryDeleted = async function (req, res) {
     try {
-        const isValid = function (value) {
-            if (typeof value === 'undefined' || value === null) return false
-            if (typeof value === 'string' && value.trim().length === 0) return false
-            return true
-        }
-        const isValidObjectId = function (objectId) {
-            return mongoose.Types.ObjectId.isValid(objectId);
-        }
-        const filterQuery = { isDeleted: false, deletedAt: null };
-        const queryParams = req.query;
-        const authorIdFromToken = req.authorId;
+        let data = req.query;
+        let blog = req.query.authorId;
 
-        if (!isValidObjectId(authorIdFromToken)) {
-            return res.status(400).send({ staus: false, message: `${authorIdFromToken} is not a valid token id` });
+        if (!blog) {
+            return res.status(400).send({ status: false, msg: "Plz Enter authorId In Query" });
         }
 
-        const { authorId, category } = queryParams;
-
-        if (isValid(authorId) && isValidObjectId(authorId)) {
-            filterQuery['authorId'] = authorId
+        let valid = await blogModel.findOne(data);
+        if (!valid) {
+            return res.status(404).send({ status: false, msg: "Data doesn't exit!!" })
         }
 
-        if (isValid(category)) {
-            filterQuery['category'] = category.trim()
+        if (Object.values(data).length <= 0) {
+            return res.status(400).send({ status: false, msg: "Input Missing" });
         }
 
-        const blogs = await blogModel.find(filterQuery);
-
-        if (Array.isArray(blogs) && blogs.length === 0) {
-            return res.status(404).send({ status: false, message: "No Matching Blog Found" });
+        let deleted = await blogModel.findOneAndUpdate(data, { isDeleted: true }, { new: true });
+        if (deleted.isDeleted == true) {
+            let update = await blogModel.findOneAndUpdate({ _id: blog }, { deletedAt: new String(Date()) });
         }
-
-        const idsOfBlogsToDelete = blogs.map(blog => {
-            if (blog.authorId.toString() === authorIdFromToken);
-            return blog._id
-        })
-
-        if (idsOfBlogsToDelete.length === 0) {
-            return res.status(404).send({ status: false, message: "No Blog Found" });
+        if (deleted.isDeleted == false) {
+            let update = await blogModel.findOneAndUpdate({ _id: blog }, { deletedAt: null });
         }
-
-        await blogModel.updateMany({ _id: { $in: idsOfBlogsToDelete } }, { $set: { isDeleted: true, deletedAt: new Date() } });
-        res.status(200).send({ status: true, message: "blog Deleted Succesfully" });
-
-        // let data = req.query;
-        // let valid = await blogModel.findOne(data);
-        // if (!valid) {
-        //     return res.status(404).send({ status: false, msg: "Data doesn't exit!!" })
-        // }
-        // if (Object.values(data).length <= 0) {
-        //     return res.status(400).send({ status: false, msg: "Input Missing" });
-        // }
-        // let deleted = await blogModel.findOneAndUpdate(data, { isDeleted: true }, { new: true });
-        // if (deleted.isDeleted == true) {
-        //     let update = await blogModel.findOneAndUpdate({ _id: blog }, { deletedAt: new String(Date()) });
-        // }
-        // if (deleted.isDeleted == false) {
-        //     let update = await blogModel.findOneAndUpdate({ _id: blog }, { deletedAt: null });
-        // }
-        // return res.status(200).send({ status: true, data: deleted });
+        return res.status(200).send({ status: true, data: deleted });
     }
     catch (error) {
         return res.status(500).send({ error: error.message });
